@@ -1,6 +1,7 @@
 debug: false
 # used for development only - not supported in production
 devMode: false
+driver: "aliyun"
 
 image:
   repository: rancher/rancher-csp-adapter
