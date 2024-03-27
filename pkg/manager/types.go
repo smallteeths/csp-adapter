@@ -25,7 +25,8 @@ const (
 	StatusNotInCompliance = "NonCompliant"
 	defaultPlatform       = "x86_64"
 	// SUSE support config reads EC2 as being for AWS, we want to use the same syntax to be consistent
-	awsSupportConfigCSP = "EC2"
+	awsSupportConfigCSP    = "EC2"
+	aliyunSupportConfigCSP = "aliyun"
 )
 
 type ComplianceInfo struct {
@@ -51,4 +52,31 @@ func createProductString(rancherVersion string) string {
 	// rancher version that comes from k8s is prefixed with a v, but suse lists the product version without a v
 	productVersion := strings.TrimPrefix(rancherVersion, "v")
 	return fmt.Sprintf("cpe:/o:suse:rancher:%s", productVersion)
+}
+
+type AliyunCSPSupportConfig struct {
+	SupportEligible bool           `json:"support_eligible,omitempty"`
+	Platform        string         `json:"platform"`
+	Product         string         `json:"product"`
+	CSP             AliyunCSPInfo  `json:"csp"`
+	Compliance      ComplianceInfo `json:"compliance"`
+}
+
+type AliyunCSPInfo struct {
+	Name   string `json:"name"`
+	Token  string `json:"token"`
+	Expiry string `json:"expiry"`
+}
+
+func GetAliyunDefaultSupportConfig(client k8s.Client) AliyunCSPSupportConfig {
+	rancherVersion, err := client.GetRancherVersion()
+	if err != nil {
+		rancherVersion = "unknown"
+	}
+	product := createProductString(rancherVersion)
+	return AliyunCSPSupportConfig{
+		SupportEligible: true,
+		Platform:        defaultPlatform,
+		Product:         product,
+	}
 }
