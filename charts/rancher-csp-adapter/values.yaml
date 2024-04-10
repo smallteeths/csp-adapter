@@ -4,8 +4,8 @@ devMode: false
 driver: "aliyun"
 
 image:
-  repository: rancher/rancher-csp-adapter
-  tag: latest
+  repository: wangsiye/csp-adapter
+  tag: 0.2
   imagePullPolicy: IfNotPresent
 
 global:

@@ -109,7 +109,7 @@ func (m *ALIYUN) runComplianceCheck(ctx context.Context) error {
 	//}
 	configMessage := fmt.Sprintf("Rancher server required license(s) and was able to check out license(s)")
 
-	statusMessage := fmt.Sprintf("%s You have exceeded your licensed node count. At least %d more license(s) are required in AWS to become compliant.",
+	statusMessage := fmt.Sprintf("%s You have exceeded your licensed node count. At least %d more license(s) are required in ALIYUN to become compliant.",
 		"aliyun csp adapter", 4)
 	return m.updateAdapterOutput(ctx, false, configMessage, statusMessage)
 }
