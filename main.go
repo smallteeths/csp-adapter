@@ -6,7 +6,6 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/rancher/csp-adapter/pkg/clients/aliyun"
 	"github.com/rancher/csp-adapter/pkg/clients/aws"
 	"github.com/rancher/csp-adapter/pkg/clients/k8s"
 	"github.com/rancher/csp-adapter/pkg/manager"
@@ -108,25 +107,25 @@ func startAWS(ctx context.Context, k8sClients *k8s.Clients, cfg *rest.Config, de
 }
 
 func startAliyun(ctx context.Context, k8sClients *k8s.Clients, cfg *rest.Config) error {
-	aliyunClient, err := aliyun.NewClient()
-	if err != nil {
-		registerErr := registerStartupError(k8sClients, createCSPInfo(aliyunCSP, "unknown"), err)
-		if registerErr != nil {
-			return fmt.Errorf("unable to start or register manager error, start error: %v, register error: %v", err, registerErr)
-		}
-		return fmt.Errorf("failed to start, unable to start aliyun client: %v", err)
-	}
+	//aliyunClient, err := aliyun.NewClient()
+	//if err != nil {
+	//	registerErr := registerStartupError(k8sClients, createCSPInfo(aliyunCSP, "unknown"), err)
+	//	if registerErr != nil {
+	//		return fmt.Errorf("unable to start or register manager error, start error: %v, register error: %v", err, registerErr)
+	//	}
+	//	return fmt.Errorf("failed to start, unable to start aliyun client: %v", err)
+	//}
 
-	hostname, err := k8sClients.GetRancherHostname()
-	if err != nil {
-		registerErr := registerStartupAliyunError(k8sClients, createAliyunCSPInfo(aliyunCSP), err)
-		if registerErr != nil {
-			return fmt.Errorf("unable to start or register manager error, start error: %v, register error: %v", err, registerErr)
-		}
-		return fmt.Errorf("failed to start, unable to get hostname: %v", err)
-	}
+	//hostname, err := k8sClients.GetRancherHostname()
+	//if err != nil {
+	//	registerErr := registerStartupAliyunError(k8sClients, createAliyunCSPInfo(aliyunCSP), err)
+	//	if registerErr != nil {
+	//		return fmt.Errorf("unable to start or register manager error, start error: %v, register error: %v", err, registerErr)
+	//	}
+	//	return fmt.Errorf("failed to start, unable to get hostname: %v", err)
+	//}
 
-	m := manager.NewALIYUN(aliyunClient, k8sClients, metrics.NewScraper(hostname, cfg))
+	m := manager.NewALIYUN(k8sClients)
 
 	errs := make(chan error, 1)
 	m.Start(ctx, errs)

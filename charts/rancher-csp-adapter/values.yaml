@@ -23,3 +23,9 @@ aws:
   enabled: false
   accountNumber: ""
   roleName: ""
+
+aliyun:
+  enabled: true
+
+csp-adapter:
+  csp: "aliyun"
